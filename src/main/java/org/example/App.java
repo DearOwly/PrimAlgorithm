@@ -1,5 +1,10 @@
 package org.example;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class App
@@ -45,8 +50,7 @@ public class App
                 }
             }
         }
-
-        printMST(parent, graph);
+      //  printMST(parent, graph);
     }
 
     //простой вывод остова
@@ -57,13 +61,26 @@ public class App
         }
     }
 
-    public static void main( String[] args )
-    {
-        int[][] graph = {{0, 2, 0, 6, 0},
-                {2, 0, 3, 8, 5},
-                {0, 3, 0, 0, 7},
-                {6, 8, 0, 0, 9},
-                {0, 5, 7, 9, 0}};
+    public static void main( String[] args ) throws IOException {
+        for (int k = 10; k <= 110; k++) {
+            Path path = Paths.get("src/main/java/org/example/data/data" + (k-9));
+            List<String> lines = Files.readAllLines(path);
+            int[][] graph = new int[lines.size()][lines.size()];
+            int i = -1, j = -1;
+            for(String line : lines){
+                i += 1;
+                for(String el: line.split(" ")){
+                    j+=1;
+                    graph[i][j] = Integer.parseInt(el);
+                }
+                j = -1;
+            }
+
+        long start = System.nanoTime();
         primMST(graph);
+        long finish = System.nanoTime();
+        System.out.println((finish - start) / 1000);
+
     }
+}
 }
